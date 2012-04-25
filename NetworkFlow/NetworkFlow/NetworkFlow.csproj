@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{57300FB2-5F7A-4D19-B8E1-D0AA2E17BCE4}</ProjectGuid>
+    <ProjectGuid>{BCD924D7-EEBE-4B10-97AA-EA35F21042C7}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NetworkFlow</RootNamespace>
@@ -34,6 +34,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.GLEE">
+      <HintPath>GLEE\Microsoft.GLEE.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.GLEE.Drawing">
+      <HintPath>GLEE\Microsoft.GLEE.Drawing.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.GLEE.GraphViewerGDI">
+      <HintPath>GLEE\Microsoft.GLEE.GraphViewerGDI.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -46,6 +55,48 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AboutForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AboutForm.Designer.cs">
+      <DependentUpon>AboutForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AddEdgeForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddEdgeForm.Designer.cs">
+      <DependentUpon>AddEdgeForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AddNodeForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddNodeForm.Designer.cs">
+      <DependentUpon>AddNodeForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EditEdgeForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EditEdgeForm.Designer.cs">
+      <DependentUpon>EditEdgeForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EditNodeForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EditNodeForm.Designer.cs">
+      <DependentUpon>EditNodeForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GraphSummary.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GraphSummary.Designer.cs">
+      <DependentUpon>GraphSummary.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LoaderForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LoaderForm.Designer.cs">
+      <DependentUpon>LoaderForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -54,6 +105,27 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="AboutForm.resx">
+      <DependentUpon>AboutForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddEdgeForm.resx">
+      <DependentUpon>AddEdgeForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EditEdgeForm.resx">
+      <DependentUpon>EditEdgeForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EditNodeForm.resx">
+      <DependentUpon>EditNodeForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GraphSummary.resx">
+      <DependentUpon>GraphSummary.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LoaderForm.resx">
+      <DependentUpon>LoaderForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -62,6 +134,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -74,8 +147,37 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="BLL\" />
-    <Folder Include="DAL\" />
+    <Folder Include="GLEE\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NetworkFlow.Provider\NetworkFlow.Provider.csproj">
+      <Project>{AF01A554-9D2D-4281-AA64-D042BD0CD456}</Project>
+      <Name>NetworkFlow.Provider</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Icons\open_graph_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Icons\new_graph_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Icons\save_graph_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Icons\save_results_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Icons\about_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Icons\calculate_flow_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Icons\exit_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Icons\graph_icon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

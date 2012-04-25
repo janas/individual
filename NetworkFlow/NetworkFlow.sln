@@ -1,18 +1,40 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetworkFlow", "NetworkFlow\NetworkFlow.csproj", "{57300FB2-5F7A-4D19-B8E1-D0AA2E17BCE4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetworkFlow", "NetworkFlow\NetworkFlow.csproj", "{BCD924D7-EEBE-4B10-97AA-EA35F21042C7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetworkFlow.Provider", "NetworkFlow.Provider\NetworkFlow.Provider.csproj", "{AF01A554-9D2D-4281-AA64-D042BD0CD456}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|Mixed Platforms = Debug|Mixed Platforms
 		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|Mixed Platforms = Release|Mixed Platforms
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{57300FB2-5F7A-4D19-B8E1-D0AA2E17BCE4}.Debug|x86.ActiveCfg = Debug|x86
-		{57300FB2-5F7A-4D19-B8E1-D0AA2E17BCE4}.Debug|x86.Build.0 = Debug|x86
-		{57300FB2-5F7A-4D19-B8E1-D0AA2E17BCE4}.Release|x86.ActiveCfg = Release|x86
-		{57300FB2-5F7A-4D19-B8E1-D0AA2E17BCE4}.Release|x86.Build.0 = Release|x86
+		{BCD924D7-EEBE-4B10-97AA-EA35F21042C7}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{BCD924D7-EEBE-4B10-97AA-EA35F21042C7}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{BCD924D7-EEBE-4B10-97AA-EA35F21042C7}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{BCD924D7-EEBE-4B10-97AA-EA35F21042C7}.Debug|x86.ActiveCfg = Debug|x86
+		{BCD924D7-EEBE-4B10-97AA-EA35F21042C7}.Debug|x86.Build.0 = Debug|x86
+		{BCD924D7-EEBE-4B10-97AA-EA35F21042C7}.Release|Any CPU.ActiveCfg = Release|x86
+		{BCD924D7-EEBE-4B10-97AA-EA35F21042C7}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{BCD924D7-EEBE-4B10-97AA-EA35F21042C7}.Release|Mixed Platforms.Build.0 = Release|x86
+		{BCD924D7-EEBE-4B10-97AA-EA35F21042C7}.Release|x86.ActiveCfg = Release|x86
+		{BCD924D7-EEBE-4B10-97AA-EA35F21042C7}.Release|x86.Build.0 = Release|x86
+		{AF01A554-9D2D-4281-AA64-D042BD0CD456}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF01A554-9D2D-4281-AA64-D042BD0CD456}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF01A554-9D2D-4281-AA64-D042BD0CD456}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{AF01A554-9D2D-4281-AA64-D042BD0CD456}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{AF01A554-9D2D-4281-AA64-D042BD0CD456}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{AF01A554-9D2D-4281-AA64-D042BD0CD456}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF01A554-9D2D-4281-AA64-D042BD0CD456}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF01A554-9D2D-4281-AA64-D042BD0CD456}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{AF01A554-9D2D-4281-AA64-D042BD0CD456}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{AF01A554-9D2D-4281-AA64-D042BD0CD456}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
