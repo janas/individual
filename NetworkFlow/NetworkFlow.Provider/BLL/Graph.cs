@@ -172,8 +172,16 @@ namespace NetworkFlow.Provider.BLL
         /// </param>
         internal void AddDirectedEdge(GraphNode from, GraphNode to, int flow)
         {
-            var edge = new GraphEdge { NodeFrom = @from, NodeTo = to, Capacity = flow, UsedCapacity = 0 };
+            var edge = new GraphEdge
+                { NodeFrom = @from, NodeTo = to, Capacity = flow, MaxCapacity = flow, IsResidual = false };
             from.Neighbours.Add(edge);
+            var edgeResidual = to.Neighbours.FindByName(to.VertexId, from.VertexId);
+            if (edgeResidual == null)
+            {
+                var edgeRes = new GraphEdge { NodeFrom = to, NodeTo = @from, Capacity = 0, IsResidual = true };
+                to.Neighbours.Add(edgeRes);
+            }
+
             this.edges++;
         }
 
@@ -283,13 +291,13 @@ namespace NetworkFlow.Provider.BLL
                 int minCapacity = int.MaxValue;
                 foreach (GraphEdge edge in path)
                 {
-                    if ((edge.Capacity - edge.UsedCapacity) < minCapacity)
+                    if (edge.Capacity < minCapacity)
                     {
-                        minCapacity = edge.Capacity - edge.UsedCapacity;
+                        minCapacity = edge.Capacity;
                     }
                 }
 
-                AugumentPath(path, minCapacity);
+                this.AugumentPath(path, minCapacity);
                 this.maxFlow += minCapacity;
                 path = this.BreadthFirstSearch(this.source, this.sink);
             }
@@ -312,13 +320,13 @@ namespace NetworkFlow.Provider.BLL
                 int minCapacity = int.MaxValue;
                 foreach (GraphEdge edge in path)
                 {
-                    if ((edge.Capacity - edge.UsedCapacity) < minCapacity)
+                    if (edge.Capacity < minCapacity)
                     {
-                        minCapacity = edge.Capacity - edge.UsedCapacity;
+                        minCapacity = edge.Capacity;
                     }
                 }
 
-                AugumentPath(path, minCapacity);
+                this.AugumentPath(path, minCapacity);
                 this.maxFlow += minCapacity;
                 path = this.DepthFirstSearch(this.source, this.sink);
             }
@@ -455,13 +463,13 @@ namespace NetworkFlow.Provider.BLL
                 int minCapacity = int.MaxValue;
                 foreach (GraphEdge edge in path)
                 {
-                    if ((edge.Capacity - edge.UsedCapacity) < minCapacity)
+                    if (edge.Capacity < minCapacity)
                     {
-                        minCapacity = edge.Capacity - edge.UsedCapacity;
+                        minCapacity = edge.Capacity;
                     }
                 }
 
-                AugumentPath(path, minCapacity);
+                this.AugumentPath(path, minCapacity);
                 this.maxFlow += minCapacity;
                 return this.maxFlow;
             }
@@ -483,13 +491,13 @@ namespace NetworkFlow.Provider.BLL
                 int minCapacity = int.MaxValue;
                 foreach (GraphEdge edge in path)
                 {
-                    if ((edge.Capacity - edge.UsedCapacity) < minCapacity)
+                    if (edge.Capacity < minCapacity)
                     {
-                        minCapacity = edge.Capacity - edge.UsedCapacity;
+                        minCapacity = edge.Capacity;
                     }
                 }
 
-                AugumentPath(path, minCapacity);
+                this.AugumentPath(path, minCapacity);
                 this.maxFlow += minCapacity;
                 return this.maxFlow;
             }
@@ -507,7 +515,7 @@ namespace NetworkFlow.Provider.BLL
             {
                 foreach (GraphEdge neighbour in gnode.Neighbours)
                 {
-                    neighbour.UsedCapacity = 0;
+                    neighbour.Capacity = neighbour.MaxCapacity;
                 }
 
                 gnode.TraverseParent = null;
@@ -523,12 +531,30 @@ namespace NetworkFlow.Provider.BLL
         /// <param name="minCapacity">
         /// The min capacity.
         /// </param>
-        private static void AugumentPath(IEnumerable<GraphEdge> path, int minCapacity)
+        private void AugumentPath(IEnumerable<GraphEdge> path, int minCapacity)
         {
             foreach (GraphEdge edge in path)
             {
-                edge.UsedCapacity += minCapacity;
+                GraphEdge edgeResidual = this.GetResidualEdge(edge);
+                edge.Capacity -= minCapacity;
+                edgeResidual.Capacity += minCapacity;
             }
+        }
+
+        /// <summary>
+        /// The GetResidualEdge method.
+        /// </summary>
+        /// <param name="edge">
+        /// The edge.
+        /// </param>
+        /// <returns>
+        /// Returns GraphEdge object which is a residual edge to given edge.
+        /// </returns>
+        private GraphEdge GetResidualEdge(GraphEdge edge)
+        {
+            GraphNode gnode = this.nodeSet.FindByName(edge.NodeTo.VertexId);
+            GraphEdge edgeResidual = gnode.Neighbours.FindByName(edge.NodeTo.VertexId, edge.NodeFrom.VertexId);
+            return edgeResidual;
         }
 
         /// <summary>
@@ -563,7 +589,7 @@ namespace NetworkFlow.Provider.BLL
                 foreach (GraphEdge neighbour in neighbours)
                 {
                     GraphNode next = neighbour.NodeTo;
-                    if ((neighbour.Capacity - neighbour.UsedCapacity > 0) && !discovered.Contains(next))
+                    if (neighbour.Capacity > 0 && !discovered.Contains(next))
                     {
                         next.TraverseParent = current;
                         queue.Enqueue(next);
@@ -606,7 +632,7 @@ namespace NetworkFlow.Provider.BLL
                 foreach (GraphEdge neighbour in neighbours)
                 {
                     GraphNode next = neighbour.NodeTo;
-                    if ((neighbour.Capacity - neighbour.UsedCapacity > 0) && !discovered.Contains(next))
+                    if (neighbour.Capacity > 0 && !discovered.Contains(next))
                     {
                         next.TraverseParent = current;
                         stack.Push(next);
