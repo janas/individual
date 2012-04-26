@@ -640,6 +640,8 @@ namespace NetworkFlow
         private void ResetGraphToolStripMenuItemClick(object sender, EventArgs e)
         {
             this.provider.ResetGraph();
+            this.DrawGraph();
+            this.toolStripStatusLabelValue.Text = "?";
             this.toolStripButtonExportResults.Enabled = false;
             this.exportResultsToolStripMenuItem.Enabled = false;
         }
