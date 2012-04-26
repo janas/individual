@@ -32,9 +32,14 @@ namespace NetworkFlow.Provider.BLL
         public GraphNode NodeTo { get; set; }
 
         /// <summary>
-        /// Gets or sets UsedCapacity.
+        /// Gets or sets MaxCapacity.
         /// </summary>
-        public int UsedCapacity { get; set; }
+        public int MaxCapacity { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether IsResidual.
+        /// </summary>
+        public bool IsResidual { get; set; }
 
         #endregion
     }
