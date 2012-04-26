@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MainForm.cs" company="">
-//   
+// <copyright file="MainForm.cs" company="Warsaw University of Technology">
+//   Piotr Janaszek
 // </copyright>
 // <summary>
 //   The main form.
@@ -48,6 +48,11 @@ namespace NetworkFlow
         /// The selected object attr.
         /// </summary>
         private object selectedObjectAttr;
+
+        /// <summary>
+        /// The enable calculate
+        /// </summary>
+        private bool enableCalculate;
 
         /// <summary>
         /// The step by step.
@@ -192,6 +197,7 @@ namespace NetworkFlow
         {
             this.DrawGraph();
             this.toolStripStatusLabelState.Text = "Ready";
+            this.enableCalculate = true;
             this.toolStripProgressBar.Visible = false;
             this.exportGraphToXMLToolStripMenuItem.Enabled = true;
             this.toolStripButtonExportGraphToXML.Enabled = true;
@@ -258,12 +264,17 @@ namespace NetworkFlow
 
                 for (int i = 0; i < node.Neighbours.Count; i++)
                 {
+                    if (node.Neighbours[i].IsResidual)
+                    {
+                        continue;
+                    }
+
                     Edge edge = this.networkVizualizationGraph.AddEdge(
                         node.VertexId, 
-                        "[" + node.Neighbours[i].Capacity + "|" + node.Neighbours[i].UsedCapacity + "]", 
+                        "[" + node.Neighbours[i].MaxCapacity + "|" + node.Neighbours[i].Capacity + "]", 
                         node.Neighbours[i].NodeTo.VertexId);
                     edge.EdgeAttr.ArrowHeadAtTarget = ArrowStyle.Normal;
-                    if (node.Neighbours[i].UsedCapacity <= 0)
+                    if (node.Neighbours[i].Capacity >= node.Neighbours[i].MaxCapacity)
                     {
                         continue;
                     }
@@ -644,6 +655,11 @@ namespace NetworkFlow
             this.toolStripStatusLabelValue.Text = "?";
             this.toolStripButtonExportResults.Enabled = false;
             this.exportResultsToolStripMenuItem.Enabled = false;
+            if (this.enableCalculate)
+            {
+                this.toolStripButtonCalculateFlow.Enabled = true;
+                this.calculateMaximumFlowToolStripMenuItem.Enabled = true;
+            }
         }
 
         /// <summary>
