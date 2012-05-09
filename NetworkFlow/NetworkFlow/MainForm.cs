@@ -520,7 +520,12 @@ namespace NetworkFlow
 
                     var edge = this.graphViewer.SelectedObject as Edge;
                     this.graphViewer.SetToolTip(
-                        this.toolTip, string.Format("Edge from {0} to {1}", edge.Source, edge.Target));
+                        this.toolTip,
+                        string.Format(
+                        "Edge from {0} to {1}" + Environment.NewLine + "Maximum capacity | left capacity: {2}",
+                            edge.Source,
+                            edge.Target,
+                            edge.Attr.Label));
                 }
                 else if (this.selectedObject is Node)
                 {
