@@ -51,12 +51,17 @@ namespace NetworkFlow.Provider.DAL
                 xmlWriter.WriteStartElement("edges");
                 foreach (GraphNode node in graph.Nodes)
                 {
-                    foreach (GraphEdge neighbour in node.Neighbours)
+                    foreach (GraphEdge edge in node.Neighbours)
                     {
+                        if (edge.IsResidual)
+                        {
+                            continue;
+                        }
+
                         xmlWriter.WriteStartElement("edge");
-                        xmlWriter.WriteElementString("from", neighbour.NodeFrom.VertexId);
-                        xmlWriter.WriteElementString("to", neighbour.NodeTo.VertexId);
-                        xmlWriter.WriteElementString("flow", neighbour.Capacity.ToString());
+                        xmlWriter.WriteElementString("from", edge.NodeFrom.VertexId);
+                        xmlWriter.WriteElementString("to", edge.NodeTo.VertexId);
+                        xmlWriter.WriteElementString("flow", edge.Capacity.ToString());
                         xmlWriter.WriteEndElement();
                     }
                 }
