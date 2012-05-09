@@ -385,12 +385,12 @@ namespace NetworkFlow.Provider.BLL
                 {
                     if (gnode.Neighbours[i].NodeTo == nodeToRemove)
                     {
-                        index.Add(i);
+                        index.Insert(0, i);
                     }
 
                     if (gnode.Neighbours[i].NodeFrom == nodeToRemove)
                     {
-                        index.Add(i);
+                        index.Insert(0, i);
                     }
                 }
 
