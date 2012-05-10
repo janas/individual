@@ -117,7 +117,7 @@ namespace NetworkFlow.Provider
         /// </returns>
         public int DinitzBlocking()
         {
-            return 0;
+            return this.graph.DinitzBlockingMaximumFlow();
         }
 
         /// <summary>
@@ -325,7 +325,7 @@ namespace NetworkFlow.Provider
         /// </returns>
         public int StepByStepDinitzBlocking()
         {
-            return 0;
+            return this.graph.StepByStepDinitzBlockingMaximumFlow();
         }
 
         /// <summary>
