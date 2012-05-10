@@ -173,12 +173,22 @@ namespace NetworkFlow.Provider.BLL
         internal void AddDirectedEdge(GraphNode from, GraphNode to, int flow)
         {
             var edge = new GraphEdge
-                { NodeFrom = @from, NodeTo = to, Capacity = flow, MaxCapacity = flow, IsResidual = false };
+                {
+                    NodeFrom = @from, 
+                    NodeTo = to, 
+                    Capacity = flow, 
+                    MaxCapacity = flow, 
+                    IsResidual = false, 
+                    IsVisible = true
+                };
             from.Neighbours.Add(edge);
-            var edgeResidual = to.Neighbours.FindByName(to.VertexId, from.VertexId);
+            GraphEdge edgeResidual = to.Neighbours.FindByName(to.VertexId, from.VertexId);
             if (edgeResidual == null)
             {
-                var edgeRes = new GraphEdge { NodeFrom = to, NodeTo = @from, Capacity = 0, IsResidual = true };
+                var edgeRes = new GraphEdge
+                    {
+                       NodeFrom = to, NodeTo = @from, Capacity = 0, IsResidual = true, IsVisible = true 
+                    };
                 to.Neighbours.Add(edgeRes);
             }
 
@@ -252,6 +262,41 @@ namespace NetworkFlow.Provider.BLL
         internal bool Contains(string vertexId)
         {
             return this.nodeSet.FindByName(vertexId) != null;
+        }
+
+        /// <summary>
+        /// The dinitz blocking maximum flow.
+        /// </summary>
+        /// <returns>
+        /// Returns maximum flow value.
+        /// </returns>
+        internal int DinitzBlockingMaximumFlow()
+        {
+            var work = true;
+            while (work)
+            {
+                this.SetVisible();
+                work = this.BreadthFirstSearchDinitzBlocking(this.source, this.sink);
+                this.BuildLayerdGraph();
+                GraphEdgeList path = this.DepthFirstSearch(this.source, this.sink);
+                while (path != null && path.Count > 0)
+                {
+                    int minCapacity = int.MaxValue;
+                    foreach (GraphEdge edge in path)
+                    {
+                        if (edge.Capacity < minCapacity)
+                        {
+                            minCapacity = edge.Capacity;
+                        }
+                    }
+
+                    this.AugumentPath(path, minCapacity);
+                    this.maxFlow += minCapacity;
+                    path = this.DepthFirstSearch(this.source, this.sink);
+                }
+            }
+
+            return this.maxFlow;
         }
 
         /// <summary>
@@ -404,6 +449,24 @@ namespace NetworkFlow.Provider.BLL
         }
 
         /// <summary>
+        /// The reset graph.
+        /// </summary>
+        internal void ResetGraph()
+        {
+            this.maxFlow = 0;
+            foreach (GraphNode gnode in this.nodeSet)
+            {
+                foreach (GraphEdge neighbour in gnode.Neighbours)
+                {
+                    neighbour.Capacity = neighbour.MaxCapacity;
+                    neighbour.IsVisible = true;
+                }
+
+                gnode.TraverseParent = null;
+            }
+        }
+
+        /// <summary>
         /// The set sink node.
         /// </summary>
         /// <param name="vertexId">
@@ -447,6 +510,42 @@ namespace NetworkFlow.Provider.BLL
                     this.Source = node.VertexId;
                 }
             }
+        }
+
+        /// <summary>
+        /// The step by step dinitz blocking maximum flow.
+        /// </summary>
+        /// <returns>
+        /// Returns partial maximum flow.
+        /// </returns>
+        internal int StepByStepDinitzBlockingMaximumFlow()
+        {
+            this.SetVisible();
+            bool work = this.BreadthFirstSearchDinitzBlocking(this.source, this.sink);
+            if (work)
+            {
+                this.BuildLayerdGraph();
+                GraphEdgeList path = this.DepthFirstSearch(this.source, this.sink);
+                while (path != null && path.Count > 0)
+                {
+                    int minCapacity = int.MaxValue;
+                    foreach (GraphEdge edge in path)
+                    {
+                        if (edge.Capacity < minCapacity)
+                        {
+                            minCapacity = edge.Capacity;
+                        }
+                    }
+
+                    this.AugumentPath(path, minCapacity);
+                    this.maxFlow += minCapacity;
+                    path = this.DepthFirstSearch(this.source, this.sink);
+                }
+
+                return this.maxFlow;
+            }
+
+            return -1;
         }
 
         /// <summary>
@@ -506,23 +605,6 @@ namespace NetworkFlow.Provider.BLL
         }
 
         /// <summary>
-        /// The reset graph.
-        /// </summary>
-        internal void ResetGraph()
-        {
-            this.maxFlow = 0;
-            foreach (GraphNode gnode in this.nodeSet)
-            {
-                foreach (GraphEdge neighbour in gnode.Neighbours)
-                {
-                    neighbour.Capacity = neighbour.MaxCapacity;
-                }
-
-                gnode.TraverseParent = null;
-            }
-        }
-
-        /// <summary>
         /// The augument path.
         /// </summary>
         /// <param name="path">
@@ -539,22 +621,6 @@ namespace NetworkFlow.Provider.BLL
                 edge.Capacity -= minCapacity;
                 edgeResidual.Capacity += minCapacity;
             }
-        }
-
-        /// <summary>
-        /// The GetResidualEdge method.
-        /// </summary>
-        /// <param name="edge">
-        /// The edge.
-        /// </param>
-        /// <returns>
-        /// Returns GraphEdge object which is a residual edge to given edge.
-        /// </returns>
-        private GraphEdge GetResidualEdge(GraphEdge edge)
-        {
-            GraphNode gnode = this.nodeSet.FindByName(edge.NodeTo.VertexId);
-            GraphEdge edgeResidual = gnode.Neighbours.FindByName(edge.NodeTo.VertexId, edge.NodeFrom.VertexId);
-            return edgeResidual;
         }
 
         /// <summary>
@@ -601,6 +667,79 @@ namespace NetworkFlow.Provider.BLL
         }
 
         /// <summary>
+        /// The breadth first search dinitz blocking.
+        /// </summary>
+        /// <param name="root">
+        /// The root.
+        /// </param>
+        /// <param name="target">
+        /// The target.
+        /// </param>
+        /// <returns>
+        /// Returns true if there is a path from source to sink, false otherwise.
+        /// </returns>
+        private bool BreadthFirstSearchDinitzBlocking(GraphNode root, GraphNode target)
+        {
+            root.TraverseParent = null;
+            target.TraverseParent = null;
+            var queue = new Queue<GraphNode>();
+            var discovered = new HashSet<GraphNode>();
+            var distance = new HashSet<GraphNode>();
+            queue.Enqueue(root);
+            root.Distance = 0;
+            while (queue.Count > 0)
+            {
+                GraphNode current = queue.Dequeue();
+                discovered.Add(current);
+                if (current == target)
+                {
+                    return true;
+                }
+
+                GraphEdgeList neighbours = current.Neighbours;
+                foreach (GraphEdge neighbour in neighbours)
+                {
+                    if (!neighbour.IsVisible)
+                    {
+                        continue;
+                    }
+
+                    GraphNode next = neighbour.NodeTo;
+                    if (neighbour.Capacity > 0 && !discovered.Contains(next))
+                    {
+                        next.TraverseParent = current;
+                        if (!distance.Contains(next))
+                        {
+                            next.Distance = current.Distance + 1;
+                            distance.Add(next);
+                        }
+
+                        queue.Enqueue(next);
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// The build layerd graph.
+        /// </summary>
+        private void BuildLayerdGraph()
+        {
+            foreach (GraphNode node in this.nodeSet)
+            {
+                foreach (GraphEdge neighbour in node.Neighbours)
+                {
+                    if (neighbour.NodeTo.Distance == node.Distance)
+                    {
+                        neighbour.IsVisible = false;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
         /// The depth first search.
         /// </summary>
         /// <param name="root">
@@ -631,6 +770,11 @@ namespace NetworkFlow.Provider.BLL
                 GraphEdgeList neighbours = current.Neighbours;
                 foreach (GraphEdge neighbour in neighbours)
                 {
+                    if (neighbour.IsVisible == false)
+                    {
+                        continue;
+                    }
+
                     GraphNode next = neighbour.NodeTo;
                     if (neighbour.Capacity > 0 && !discovered.Contains(next))
                     {
@@ -667,6 +811,41 @@ namespace NetworkFlow.Provider.BLL
             }
 
             return path;
+        }
+
+        /// <summary>
+        /// The GetResidualEdge method.
+        /// </summary>
+        /// <param name="edge">
+        /// The edge.
+        /// </param>
+        /// <returns>
+        /// Returns GraphEdge object which is a residual edge to given edge.
+        /// </returns>
+        private GraphEdge GetResidualEdge(GraphEdge edge)
+        {
+            GraphNode gnode = this.nodeSet.FindByName(edge.NodeTo.VertexId);
+            GraphEdge edgeResidual = gnode.Neighbours.FindByName(edge.NodeTo.VertexId, edge.NodeFrom.VertexId);
+            return edgeResidual;
+        }
+
+        /// <summary>
+        /// The set visible.
+        /// </summary>
+        private void SetVisible()
+        {
+            foreach (GraphNode node in this.nodeSet)
+            {
+                foreach (GraphEdge neighbour in node.Neighbours)
+                {
+                    if (neighbour.Capacity == 0)
+                    {
+                        neighbour.IsVisible = false;
+                    }
+
+                    neighbour.IsVisible = true;
+                }
+            }
         }
 
         #endregion
