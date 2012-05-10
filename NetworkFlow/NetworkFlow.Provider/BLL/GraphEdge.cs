@@ -41,6 +41,11 @@ namespace NetworkFlow.Provider.BLL
         /// </summary>
         public bool IsResidual { get; set; }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether IsVisible.
+        /// </summary>
+        public bool IsVisible { get; set; }
+
         #endregion
     }
 }
