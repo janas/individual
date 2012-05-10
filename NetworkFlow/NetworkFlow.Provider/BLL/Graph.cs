@@ -318,6 +318,7 @@ namespace NetworkFlow.Provider.BLL
             if (edgeToEdit != null)
             {
                 edgeToEdit.Capacity = capacity;
+                edgeToEdit.MaxCapacity = capacity;
             }
         }
 
