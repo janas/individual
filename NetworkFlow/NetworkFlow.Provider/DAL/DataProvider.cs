@@ -61,7 +61,7 @@ namespace NetworkFlow.Provider.DAL
                         xmlWriter.WriteStartElement("edge");
                         xmlWriter.WriteElementString("from", edge.NodeFrom.VertexId);
                         xmlWriter.WriteElementString("to", edge.NodeTo.VertexId);
-                        xmlWriter.WriteElementString("flow", edge.Capacity.ToString());
+                        xmlWriter.WriteElementString("flow", edge.MaxCapacity.ToString());
                         xmlWriter.WriteEndElement();
                     }
                 }
