@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("NetworkFlow")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Application for calculating maximum flow in a network using different algorithms. Mainly: Ford-Fulkerson, Edmonds-Karp and Dinitz blocking.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Warsaw University of Technology")]
 [assembly: AssemblyProduct("NetworkFlow")]
-[assembly: AssemblyCopyright("Copyright ©  2012")]
+[assembly: AssemblyCopyright("Copyright ©  2012 Piotr Janaszek")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
