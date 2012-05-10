@@ -119,6 +119,11 @@ namespace NetworkFlow.Provider.BLL
         public int NodeMode { get; set; }
 
         /// <summary>
+        /// Gets or sets Distance.
+        /// </summary>
+        public int Distance { get; set; }
+
+        /// <summary>
         /// Gets or sets TraverseParent.
         /// </summary>
         public GraphNode TraverseParent { get; set; }
