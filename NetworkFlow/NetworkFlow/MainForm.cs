@@ -206,6 +206,8 @@ namespace NetworkFlow
             this.graphToolStripMenuItem.Enabled = true;
             this.toolStripButtonCalculateFlow.Enabled = true;
             this.calculateMaximumFlowToolStripMenuItem.Enabled = true;
+            this.toolStripStatusLabelResult.Text = "Maximum flow:";
+            this.toolStripStatusLabelValue.Text = "?";
         }
 
         /// <summary>
@@ -593,6 +595,8 @@ namespace NetworkFlow
                         MessageBoxIcon.Question) == DialogResult.Yes)
                 {
                     this.provider.CreateNewGraph();
+                    this.toolStripStatusLabelResult.Text = "Maximum flow:";
+                    this.toolStripStatusLabelValue.Text = "?";
                     this.exportGraphToXMLToolStripMenuItem.Enabled = true;
                     this.DrawGraph();
                 }
@@ -694,6 +698,8 @@ namespace NetworkFlow
                 this.calculateMaximumFlowToolStripMenuItem.Enabled = false;
                 this.DrawGraph();
                 this.toolStripStatusLabelResult.Text = "Maximum flow:";
+                string message = "Maximum flow in this graph is " + this.provider.NetworkFlowGraph.MaximumFlow;
+                MessageBox.Show(message, "Calculation ended", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
             {
@@ -762,6 +768,8 @@ namespace NetworkFlow
             if (!this.stepByStep)
             {
                 int flow = 0;
+                this.toolStripButtonCalculateFlow.Enabled = false;
+                this.calculateMaximumFlowToolStripMenuItem.Enabled = false;
                 if (this.toolStripComboBoxAlgorithm.SelectedIndex == 0)
                 {
                     flow = this.provider.FordFulkerson();
@@ -780,6 +788,8 @@ namespace NetworkFlow
                 this.DrawGraph();
                 this.toolStripStatusLabelResult.Text = "Maximum flow:";
                 this.toolStripStatusLabelValue.Text = flow.ToString();
+                string message = "Maximum flow in this graph is " + this.provider.NetworkFlowGraph.MaximumFlow; 
+                MessageBox.Show(message, "Calculation ended", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
             {
