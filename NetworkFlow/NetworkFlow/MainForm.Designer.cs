@@ -180,10 +180,11 @@
             // 
             // graphToolStripMenuItem
             // 
+            this.graphToolStripMenuItem.Enabled = false;
             this.graphToolStripMenuItem.Name = "graphToolStripMenuItem";
             this.graphToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
             this.graphToolStripMenuItem.Text = "&Graph";
-            this.graphToolStripMenuItem.Click += new System.EventHandler(this.buttonTest_Click);
+            this.graphToolStripMenuItem.Click += new System.EventHandler(this.ToolStripButtonGraphSummaryClick);
             // 
             // chooseAlgorithmToolStripMenuItem
             // 
@@ -244,6 +245,7 @@
             // 
             // calculateMaximumFlowToolStripMenuItem
             // 
+            this.calculateMaximumFlowToolStripMenuItem.Enabled = false;
             this.calculateMaximumFlowToolStripMenuItem.Name = "calculateMaximumFlowToolStripMenuItem";
             this.calculateMaximumFlowToolStripMenuItem.Size = new System.Drawing.Size(208, 22);
             this.calculateMaximumFlowToolStripMenuItem.Text = "Calculate &Maximum Flow";
@@ -260,7 +262,7 @@
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
             this.aboutToolStripMenuItem.Text = "&About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.ToolStripButtonAboutClick);
             // 
@@ -515,6 +517,7 @@
             // 
             this.toolStripButtonCalculateFlow.AutoSize = false;
             this.toolStripButtonCalculateFlow.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonCalculateFlow.Enabled = false;
             this.toolStripButtonCalculateFlow.Image = global::NetworkFlow.Properties.Resources.calculate_flow_icon;
             this.toolStripButtonCalculateFlow.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.toolStripButtonCalculateFlow.ImageTransparentColor = System.Drawing.Color.Magenta;

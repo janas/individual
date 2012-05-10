@@ -203,6 +203,9 @@ namespace NetworkFlow
             this.toolStripButtonExportGraphToXML.Enabled = true;
             this.toolStripButtonGraphSummary.Enabled = true;
             this.graphToolStripMenuItem.Enabled = true;
+            this.graphToolStripMenuItem.Enabled = true;
+            this.toolStripButtonCalculateFlow.Enabled = true;
+            this.calculateMaximumFlowToolStripMenuItem.Enabled = true;
         }
 
         /// <summary>
@@ -227,6 +230,7 @@ namespace NetworkFlow
             this.fordFulkersonToolStripMenuItem.Checked = false;
             this.edmondsKarpToolStripMenuItem.Checked = false;
             this.dinitzBlockingToolStripMenuItem.Checked = true;
+            this.resetGraphToolStripMenuItem.PerformClick();
         }
 
         /// <summary>
@@ -270,8 +274,8 @@ namespace NetworkFlow
                     }
 
                     Edge edge = this.networkVizualizationGraph.AddEdge(
-                        node.VertexId, 
-                        "[" + node.Neighbours[i].MaxCapacity + "|" + node.Neighbours[i].Capacity + "]", 
+                        node.VertexId,
+                        "[" + node.Neighbours[i].MaxCapacity + "|" + node.Neighbours[i].Capacity + "]",
                         node.Neighbours[i].NodeTo.VertexId);
                     edge.EdgeAttr.ArrowHeadAtTarget = ArrowStyle.Normal;
                     if (node.Neighbours[i].Capacity >= node.Neighbours[i].MaxCapacity)
@@ -353,6 +357,7 @@ namespace NetworkFlow
             this.fordFulkersonToolStripMenuItem.Checked = false;
             this.edmondsKarpToolStripMenuItem.Checked = true;
             this.dinitzBlockingToolStripMenuItem.Checked = false;
+            this.resetGraphToolStripMenuItem.PerformClick();
         }
 
         /// <summary>
@@ -440,6 +445,7 @@ namespace NetworkFlow
             this.fordFulkersonToolStripMenuItem.Checked = true;
             this.edmondsKarpToolStripMenuItem.Checked = false;
             this.dinitzBlockingToolStripMenuItem.Checked = false;
+            this.resetGraphToolStripMenuItem.PerformClick();
         }
 
         /// <summary>
@@ -522,7 +528,7 @@ namespace NetworkFlow
                     this.graphViewer.SetToolTip(
                         this.toolTip,
                         string.Format(
-                        "Edge from {0} to {1}" + Environment.NewLine + "Maximum capacity | left capacity: {2}",
+                            "Edge from {0} to {1}" + Environment.NewLine + "Maximum capacity | left capacity: {2}",
                             edge.Source,
                             edge.Target,
                             edge.Attr.Label));
@@ -581,9 +587,9 @@ namespace NetworkFlow
             {
                 if (
                     MessageBox.Show(
-                        "It appears that you are working with another graph. Do you really want to create a new one?", 
-                        "Confirm delete", 
-                        MessageBoxButtons.YesNo, 
+                        "It appears that you are working with another graph. Do you really want to create a new one?",
+                        "Confirm delete",
+                        MessageBoxButtons.YesNo,
                         MessageBoxIcon.Question) == DialogResult.Yes)
                 {
                     this.provider.CreateNewGraph();
@@ -598,6 +604,8 @@ namespace NetworkFlow
                 this.toolStripButtonExportGraphToXML.Enabled = true;
                 this.toolStripButtonGraphSummary.Enabled = true;
                 this.graphToolStripMenuItem.Enabled = true;
+                this.toolStripButtonCalculateFlow.Enabled = true;
+                this.calculateMaximumFlowToolStripMenuItem.Enabled = true;
                 this.DrawGraph();
             }
         }
@@ -655,6 +663,11 @@ namespace NetworkFlow
         /// </param>
         private void ResetGraphToolStripMenuItemClick(object sender, EventArgs e)
         {
+            if (this.provider.NetworkFlowGraph == null)
+            {
+                return;
+            }
+
             this.provider.ResetGraph();
             this.DrawGraph();
             this.toolStripStatusLabelValue.Text = "?";
@@ -736,6 +749,16 @@ namespace NetworkFlow
         /// </param>
         private void ToolStripButtonCalculateFlowClick(object sender, EventArgs e)
         {
+            if (this.provider.NetworkFlowGraph.Source == null || this.provider.NetworkFlowGraph.Sink == null)
+            {
+                MessageBox.Show(
+                    "Graph's source or/and sink are not set. Please set them prior to calculating maximum flow.",
+                    "Graph is not set!",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Stop);
+                return;
+            }
+
             if (!this.stepByStep)
             {
                 int flow = 0;
@@ -831,48 +854,8 @@ namespace NetworkFlow
                     this.dinitzBlockingToolStripMenuItem.Checked = true;
                     break;
             }
-        }
 
-        /// <summary>
-        /// The button test_ click.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
-        private void buttonTest_Click(object sender, EventArgs e)
-        {
-            this.provider.CreateNewGraph();
-
-            /*provider.AddNode("vertex1", 1);
-            provider.AddNode("vertex2");
-            provider.AddNode("vertex3");
-            provider.AddNode("vertex4");
-            provider.AddNode("no edge", 2);
-            this.provider.AddDirectedEdge("vertex1", "vertex2", 5);
-            this.provider.AddDirectedEdge("vertex1", "vertex3", 4);
-            this.provider.AddDirectedEdge("vertex3", "vertex1", 0);
-            this.provider.AddDirectedEdge("vertex2", "vertex4", 6);
-            this.provider.AddDirectedEdge("vertex3", "no edge", 5);
-            this.provider.AddDirectedEdge("vertex4", "no edge", 5);*/
-            this.provider.AddNode("s", 1);
-            this.provider.AddNode("1");
-            this.provider.AddNode("2");
-            this.provider.AddNode("3");
-            this.provider.AddNode("4");
-            this.provider.AddNode("t", 2);
-            this.provider.AddDirectedEdge("s", "1", 10);
-            this.provider.AddDirectedEdge("s", "2", 10);
-            this.provider.AddDirectedEdge("1", "2", 2);
-            this.provider.AddDirectedEdge("1", "3", 4);
-            this.provider.AddDirectedEdge("1", "4", 8);
-            this.provider.AddDirectedEdge("2", "4", 9);
-            this.provider.AddDirectedEdge("4", "3", 6);
-            this.provider.AddDirectedEdge("3", "t", 10);
-            this.provider.AddDirectedEdge("4", "t", 10);
-            this.DrawGraph();
+            this.resetGraphToolStripMenuItem.PerformClick();
         }
 
         #endregion
