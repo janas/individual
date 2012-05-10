@@ -33,6 +33,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>main_icon.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.GLEE">
       <HintPath>GLEE\Microsoft.GLEE.dll</HintPath>
@@ -111,6 +114,9 @@
     <EmbeddedResource Include="AddEdgeForm.resx">
       <DependentUpon>AddEdgeForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="AddNodeForm.resx">
+      <DependentUpon>AddNodeForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="EditEdgeForm.resx">
       <DependentUpon>EditEdgeForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -178,6 +184,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Icons\graph_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="main_icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

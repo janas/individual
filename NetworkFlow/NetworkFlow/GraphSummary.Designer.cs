@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GraphSummary));
             this.labelNoOfNodes = new System.Windows.Forms.Label();
             this.labelNoOfEdges = new System.Windows.Forms.Label();
             this.labelSrcNode = new System.Windows.Forms.Label();
@@ -158,6 +159,7 @@
             this.Controls.Add(this.labelNoOfEdges);
             this.Controls.Add(this.labelNoOfNodes);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "GraphSummary";
