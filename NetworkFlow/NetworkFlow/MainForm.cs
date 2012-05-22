@@ -201,7 +201,8 @@ namespace NetworkFlow
             this.toolStripButtonExportGraphToXML.Enabled = true;
             this.toolStripButtonGraphSummary.Enabled = true;
             this.graphToolStripMenuItem.Enabled = true;
-            this.graphToolStripMenuItem.Enabled = true;
+            this.toolStripButtonExportResults.Enabled = false;
+            this.exportResultsToolStripMenuItem.Enabled = false;
             this.toolStripStatusLabelResult.Text = "Maximum flow:";
             this.toolStripStatusLabelValue.Text = "?";
         }
@@ -596,6 +597,8 @@ namespace NetworkFlow
                     this.toolStripStatusLabelResult.Text = "Maximum flow:";
                     this.toolStripStatusLabelValue.Text = "?";
                     this.exportGraphToXMLToolStripMenuItem.Enabled = true;
+                    this.toolStripButtonExportResults.Enabled = false;
+                    this.exportResultsToolStripMenuItem.Enabled = false;
                     this.selectedObject = null;
                     this.ToggleCalculateButton();
                     this.DrawGraph();
@@ -605,6 +608,8 @@ namespace NetworkFlow
             {
                 this.provider.CreateNewGraph();
                 this.exportGraphToXMLToolStripMenuItem.Enabled = true;
+                this.toolStripButtonExportResults.Enabled = false;
+                this.exportResultsToolStripMenuItem.Enabled = false;
                 this.toolStripButtonExportGraphToXML.Enabled = true;
                 this.toolStripButtonGraphSummary.Enabled = true;
                 this.graphToolStripMenuItem.Enabled = true;
@@ -721,9 +726,11 @@ namespace NetworkFlow
             if (this.stepByStepToolStripMenuItem.Checked)
             {
                 this.stepByStep = true;
+                this.resetGraphToolStripMenuItem.PerformClick();
                 return;
             }
 
+            this.resetGraphToolStripMenuItem.PerformClick();
             this.stepByStep = false;
         }
 
