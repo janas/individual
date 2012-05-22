@@ -163,6 +163,16 @@ namespace NetworkFlow.Provider
             graphNode.VertexId = newVertexId;
             if (mode == 0)
             {
+                if (graphNode.NodeMode == 1)
+                {
+                    this.graph.EraseSourceNode();
+                }
+
+                if (graphNode.NodeMode == 2)
+                {
+                    this.graph.EraseSinkNode();
+                }
+
                 graphNode.NodeMode = 0;
             }
 
