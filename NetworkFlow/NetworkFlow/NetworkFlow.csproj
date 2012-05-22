@@ -186,6 +186,7 @@
     <None Include="Icons\graph_icon.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Icons\reset_graph_icon.png" />
     <Content Include="main_icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

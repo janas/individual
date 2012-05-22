@@ -71,20 +71,21 @@
             this.toolStripStatusLabelState = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripProgressBar = new System.Windows.Forms.ToolStripProgressBar();
             this.toolStrip = new System.Windows.Forms.ToolStrip();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripLabelAlgorithm = new System.Windows.Forms.ToolStripLabel();
+            this.toolStripComboBoxAlgorithm = new System.Windows.Forms.ToolStripComboBox();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.backgroundWorkerLoader = new System.ComponentModel.BackgroundWorker();
+            this.backgroundWorkerExport = new System.ComponentModel.BackgroundWorker();
             this.toolStripButtonNewGraph = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonLoadFromXML = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonExportGraphToXML = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonExportResults = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButtonGraphSummary = new System.Windows.Forms.ToolStripButton();
-            this.toolStripLabelAlgorithm = new System.Windows.Forms.ToolStripLabel();
-            this.toolStripComboBoxAlgorithm = new System.Windows.Forms.ToolStripComboBox();
+            this.toolStripButtonResetGraph = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonCalculateFlow = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButtonAbout = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonExit = new System.Windows.Forms.ToolStripButton();
-            this.backgroundWorkerLoader = new System.ComponentModel.BackgroundWorker();
-            this.backgroundWorkerExport = new System.ComponentModel.BackgroundWorker();
             this.menuStrip.SuspendLayout();
             this.edgeContextMenuStrip.SuspendLayout();
             this.nodeContextMenuStrip.SuspendLayout();
@@ -415,6 +416,7 @@
             this.toolStripButtonExportResults,
             this.toolStripSeparator1,
             this.toolStripButtonGraphSummary,
+            this.toolStripButtonResetGraph,
             this.toolStripLabelAlgorithm,
             this.toolStripComboBoxAlgorithm,
             this.toolStripButtonCalculateFlow,
@@ -426,6 +428,44 @@
             this.toolStrip.Size = new System.Drawing.Size(684, 38);
             this.toolStrip.TabIndex = 6;
             this.toolStrip.Text = "toolStrip1";
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 38);
+            // 
+            // toolStripLabelAlgorithm
+            // 
+            this.toolStripLabelAlgorithm.Name = "toolStripLabelAlgorithm";
+            this.toolStripLabelAlgorithm.Size = new System.Drawing.Size(64, 35);
+            this.toolStripLabelAlgorithm.Text = "Algorithm:";
+            // 
+            // toolStripComboBoxAlgorithm
+            // 
+            this.toolStripComboBoxAlgorithm.AutoSize = false;
+            this.toolStripComboBoxAlgorithm.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.toolStripComboBoxAlgorithm.Items.AddRange(new object[] {
+            "Ford-Fulkerson",
+            "Edmonds-Karp",
+            "Dinitz Blocking"});
+            this.toolStripComboBoxAlgorithm.Name = "toolStripComboBoxAlgorithm";
+            this.toolStripComboBoxAlgorithm.Size = new System.Drawing.Size(110, 23);
+            this.toolStripComboBoxAlgorithm.SelectedIndexChanged += new System.EventHandler(this.ToolStripComboBoxAlgorithmSelectedIndexChanged);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 38);
+            // 
+            // backgroundWorkerLoader
+            // 
+            this.backgroundWorkerLoader.DoWork += new System.ComponentModel.DoWorkEventHandler(this.BackgroundWorkerLoaderDoWork);
+            this.backgroundWorkerLoader.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.BackgroundWorkerLoaderRunWorkerCompleted);
+            // 
+            // backgroundWorkerExport
+            // 
+            this.backgroundWorkerExport.DoWork += new System.ComponentModel.DoWorkEventHandler(this.BackgroundWorkerExportDoWork);
+            this.backgroundWorkerExport.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.BackgroundWorkerExportRunWorkerCompleted);
             // 
             // toolStripButtonNewGraph
             // 
@@ -477,11 +517,6 @@
             this.toolStripButtonExportResults.Text = "Export Results";
             this.toolStripButtonExportResults.Click += new System.EventHandler(this.ExportResultsToolStripMenuItemClick);
             // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 38);
-            // 
             // toolStripButtonGraphSummary
             // 
             this.toolStripButtonGraphSummary.AutoSize = false;
@@ -495,23 +530,18 @@
             this.toolStripButtonGraphSummary.Text = "Graph Summary";
             this.toolStripButtonGraphSummary.Click += new System.EventHandler(this.ToolStripButtonGraphSummaryClick);
             // 
-            // toolStripLabelAlgorithm
+            // toolStripButtonResetGraph
             // 
-            this.toolStripLabelAlgorithm.Name = "toolStripLabelAlgorithm";
-            this.toolStripLabelAlgorithm.Size = new System.Drawing.Size(64, 35);
-            this.toolStripLabelAlgorithm.Text = "Algorithm:";
-            // 
-            // toolStripComboBoxAlgorithm
-            // 
-            this.toolStripComboBoxAlgorithm.AutoSize = false;
-            this.toolStripComboBoxAlgorithm.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.toolStripComboBoxAlgorithm.Items.AddRange(new object[] {
-            "Ford-Fulkerson",
-            "Edmonds-Karp",
-            "Dinitz Blocking"});
-            this.toolStripComboBoxAlgorithm.Name = "toolStripComboBoxAlgorithm";
-            this.toolStripComboBoxAlgorithm.Size = new System.Drawing.Size(110, 23);
-            this.toolStripComboBoxAlgorithm.SelectedIndexChanged += new System.EventHandler(this.ToolStripComboBoxAlgorithmSelectedIndexChanged);
+            this.toolStripButtonResetGraph.AutoSize = false;
+            this.toolStripButtonResetGraph.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonResetGraph.Image = global::NetworkFlow.Properties.Resources.reset_graph_icon;
+            this.toolStripButtonResetGraph.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.toolStripButtonResetGraph.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonResetGraph.Name = "toolStripButtonResetGraph";
+            this.toolStripButtonResetGraph.Size = new System.Drawing.Size(36, 36);
+            this.toolStripButtonResetGraph.Text = "Reset Graph";
+            this.toolStripButtonResetGraph.ToolTipText = "Reset Graph";
+            this.toolStripButtonResetGraph.Click += new System.EventHandler(this.ResetGraphToolStripMenuItemClick);
             // 
             // toolStripButtonCalculateFlow
             // 
@@ -525,11 +555,6 @@
             this.toolStripButtonCalculateFlow.Size = new System.Drawing.Size(36, 36);
             this.toolStripButtonCalculateFlow.Text = "Calculate Maximum Flow";
             this.toolStripButtonCalculateFlow.Click += new System.EventHandler(this.ToolStripButtonCalculateFlowClick);
-            // 
-            // toolStripSeparator2
-            // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 38);
             // 
             // toolStripButtonAbout
             // 
@@ -554,16 +579,6 @@
             this.toolStripButtonExit.Size = new System.Drawing.Size(36, 36);
             this.toolStripButtonExit.Text = "Exit";
             this.toolStripButtonExit.Click += new System.EventHandler(this.ExitToolStripMenuItemClick);
-            // 
-            // backgroundWorkerLoader
-            // 
-            this.backgroundWorkerLoader.DoWork += new System.ComponentModel.DoWorkEventHandler(this.BackgroundWorkerLoaderDoWork);
-            this.backgroundWorkerLoader.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.BackgroundWorkerLoaderRunWorkerCompleted);
-            // 
-            // backgroundWorkerExport
-            // 
-            this.backgroundWorkerExport.DoWork += new System.ComponentModel.DoWorkEventHandler(this.BackgroundWorkerExportDoWork);
-            this.backgroundWorkerExport.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.BackgroundWorkerExportRunWorkerCompleted);
             // 
             // MainForm
             // 
@@ -651,5 +666,6 @@
         private System.Windows.Forms.ToolStripProgressBar toolStripProgressBar;
         private System.ComponentModel.BackgroundWorker backgroundWorkerLoader;
         private System.ComponentModel.BackgroundWorker backgroundWorkerExport;
+        private System.Windows.Forms.ToolStripButton toolStripButtonResetGraph;
     }
 }
