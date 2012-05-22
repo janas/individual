@@ -89,7 +89,9 @@ namespace NetworkFlow
                 this.provider.AddDirectedEdge(addEdgeForm.SourceVertexId, addEdgeForm.TargetVertexId, addEdgeForm.Flow);
             }
 
+            this.UpdateGraph();
             this.DrawGraph();
+            this.ToggleCalculateButton();
         }
 
         /// <summary>
@@ -110,6 +112,7 @@ namespace NetworkFlow
                 this.provider.AddNode(addNodeForm.VertexId);
             }
 
+            this.UpdateGraph();
             this.DrawGraph();
         }
 
@@ -305,6 +308,7 @@ namespace NetworkFlow
                 this.provider.EditEdge(edge.Source, edge.Target, editEdgeForm.Flow);
             }
 
+            this.UpdateGraph();
             this.DrawGraph();
         }
 
@@ -327,6 +331,7 @@ namespace NetworkFlow
                 this.provider.EditNode(oldVertexId, editNodeForm.NewVertexId, editNodeForm.Mode);
             }
 
+            this.UpdateGraph();
             this.DrawGraph();
         }
 
@@ -591,6 +596,8 @@ namespace NetworkFlow
                     this.toolStripStatusLabelResult.Text = "Maximum flow:";
                     this.toolStripStatusLabelValue.Text = "?";
                     this.exportGraphToXMLToolStripMenuItem.Enabled = true;
+                    this.selectedObject = null;
+                    this.ToggleCalculateButton();
                     this.DrawGraph();
                 }
             }
@@ -630,7 +637,9 @@ namespace NetworkFlow
         {
             var edge = this.graphViewer.SelectedObject as Edge;
             this.provider.RemoveEdge(edge.Source, edge.Target);
+            this.UpdateGraph();
             this.DrawGraph();
+            this.ToggleCalculateButton();
         }
 
         /// <summary>
@@ -645,6 +654,7 @@ namespace NetworkFlow
         private void RemoveNodeToolStripMenuItemClick(object sender, EventArgs e)
         {
             this.provider.RemoveNode((this.selectedObject as Node).Attr.Label);
+            this.UpdateGraph();
             this.DrawGraph();
         }
 
@@ -722,10 +732,15 @@ namespace NetworkFlow
         /// </summary>
         private void ToggleCalculateButton()
         {
-            if (this.provider.NetworkFlowGraph.Edges > 1)
+            if (this.provider.NetworkFlowGraph.Edges >= 1)
             {
                 this.toolStripButtonCalculateFlow.Enabled = true;
                 this.calculateMaximumFlowToolStripMenuItem.Enabled = true;
+            }
+            else
+            {
+                this.toolStripButtonCalculateFlow.Enabled = false;
+                this.calculateMaximumFlowToolStripMenuItem.Enabled = false;
             }
         }
 
@@ -866,6 +881,17 @@ namespace NetworkFlow
             }
 
             this.resetGraphToolStripMenuItem.PerformClick();
+        }
+
+        /// <summary>
+        /// Updates the graph after each modification (resets calculations).
+        /// </summary>
+        private void UpdateGraph()
+        {
+            if (this.provider.NetworkFlowGraph.MaximumFlow > 0)
+            {
+                this.resetGraphToolStripMenuItem.PerformClick();
+            }
         }
 
         #endregion
