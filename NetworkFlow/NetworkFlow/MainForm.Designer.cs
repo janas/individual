@@ -183,7 +183,7 @@
             this.graphToolStripMenuItem.Enabled = false;
             this.graphToolStripMenuItem.Name = "graphToolStripMenuItem";
             this.graphToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
-            this.graphToolStripMenuItem.Text = "&Graph";
+            this.graphToolStripMenuItem.Text = "Gra&ph";
             this.graphToolStripMenuItem.Click += new System.EventHandler(this.ToolStripButtonGraphSummaryClick);
             // 
             // chooseAlgorithmToolStripMenuItem
@@ -225,7 +225,7 @@
             this.stepByStepToolStripMenuItem.CheckOnClick = true;
             this.stepByStepToolStripMenuItem.Name = "stepByStepToolStripMenuItem";
             this.stepByStepToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
-            this.stepByStepToolStripMenuItem.Text = "S&tep by Step";
+            this.stepByStepToolStripMenuItem.Text = "&Step by Step";
             this.stepByStepToolStripMenuItem.Click += new System.EventHandler(this.StepByStepToolStripMenuItemClick);
             // 
             // resetGraphToolStripMenuItem

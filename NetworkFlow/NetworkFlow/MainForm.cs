@@ -50,11 +50,6 @@ namespace NetworkFlow
         private object selectedObjectAttr;
 
         /// <summary>
-        /// The enable calculate
-        /// </summary>
-        private bool enableCalculate;
-
-        /// <summary>
         /// The step by step.
         /// </summary>
         private bool stepByStep;
@@ -196,16 +191,14 @@ namespace NetworkFlow
         private void BackgroundWorkerLoaderRunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             this.DrawGraph();
+            this.ToggleCalculateButton();
             this.toolStripStatusLabelState.Text = "Ready";
-            this.enableCalculate = true;
             this.toolStripProgressBar.Visible = false;
             this.exportGraphToXMLToolStripMenuItem.Enabled = true;
             this.toolStripButtonExportGraphToXML.Enabled = true;
             this.toolStripButtonGraphSummary.Enabled = true;
             this.graphToolStripMenuItem.Enabled = true;
             this.graphToolStripMenuItem.Enabled = true;
-            this.toolStripButtonCalculateFlow.Enabled = true;
-            this.calculateMaximumFlowToolStripMenuItem.Enabled = true;
             this.toolStripStatusLabelResult.Text = "Maximum flow:";
             this.toolStripStatusLabelValue.Text = "?";
         }
@@ -608,8 +601,7 @@ namespace NetworkFlow
                 this.toolStripButtonExportGraphToXML.Enabled = true;
                 this.toolStripButtonGraphSummary.Enabled = true;
                 this.graphToolStripMenuItem.Enabled = true;
-                this.toolStripButtonCalculateFlow.Enabled = true;
-                this.calculateMaximumFlowToolStripMenuItem.Enabled = true;
+                this.ToggleCalculateButton();
                 this.DrawGraph();
             }
         }
@@ -677,11 +669,7 @@ namespace NetworkFlow
             this.toolStripStatusLabelValue.Text = "?";
             this.toolStripButtonExportResults.Enabled = false;
             this.exportResultsToolStripMenuItem.Enabled = false;
-            if (this.enableCalculate)
-            {
-                this.toolStripButtonCalculateFlow.Enabled = true;
-                this.calculateMaximumFlowToolStripMenuItem.Enabled = true;
-            }
+            this.ToggleCalculateButton();
         }
 
         /// <summary>
@@ -730,6 +718,18 @@ namespace NetworkFlow
         }
 
         /// <summary>
+        /// Enables calculate buttons.
+        /// </summary>
+        private void ToggleCalculateButton()
+        {
+            if (this.provider.NetworkFlowGraph.Edges > 1)
+            {
+                this.toolStripButtonCalculateFlow.Enabled = true;
+                this.calculateMaximumFlowToolStripMenuItem.Enabled = true;
+            }
+        }
+
+        /// <summary>
         /// The tool strip button about click.
         /// </summary>
         /// <param name="sender">
@@ -758,7 +758,7 @@ namespace NetworkFlow
             if (this.provider.NetworkFlowGraph.Source == null || this.provider.NetworkFlowGraph.Sink == null)
             {
                 MessageBox.Show(
-                    "Graph's source or/and sink are not set. Please set them prior to calculating maximum flow.",
+                    "Graph's source and/or sink are not set. Please set them prior to calculating maximum flow.",
                     "Graph is not set!",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Stop);
