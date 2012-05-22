@@ -190,6 +190,11 @@ namespace NetworkFlow.Provider.BLL
         /// </param>
         internal void AddDirectedEdge(GraphNode from, GraphNode to, int flow)
         {
+            if (from == null || to == null)
+            {
+                return;
+            }
+
             var edge = new GraphEdge
                 {
                     NodeFrom = @from, 
@@ -221,6 +226,12 @@ namespace NetworkFlow.Provider.BLL
         /// </param>
         internal void AddNode(string node)
         {
+            GraphNode newNode = this.nodeSet.FindByName(node);
+            if (newNode != null)
+            {
+                return;
+            }
+
             this.nodeSet.Add(new GraphNode(node));
         }
 
@@ -235,6 +246,12 @@ namespace NetworkFlow.Provider.BLL
         /// </param>
         internal void AddNode(string node, int nodeMode)
         {
+            GraphNode newNode = this.nodeSet.FindByName(node);
+            if (newNode != null)
+            {
+                return;
+            }
+
             this.nodeSet.Add(new GraphNode(node, nodeMode));
             if (nodeMode == 1)
             {
@@ -255,6 +272,12 @@ namespace NetworkFlow.Provider.BLL
         /// </param>
         internal void AddNode(GraphNode node)
         {
+            GraphNode newNode = this.nodeSet.FindByName(node.VertexId);
+            if (newNode != null)
+            {
+                return;
+            }
+            
             int nodeMode = node.NodeMode;
             this.nodeSet.Add(node);
             if (nodeMode == 1)
