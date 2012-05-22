@@ -445,13 +445,20 @@ namespace NetworkFlow.Provider.BLL
         internal bool RemoveEdge(string sourceVertexId, string targetVertexId)
         {
             GraphNode startingNode = this.nodeSet.FindByName(sourceVertexId);
+            GraphNode endingNode = this.nodeSet.FindByName(targetVertexId);
             GraphEdge edgeToRemove = startingNode.Neighbours.FindByName(sourceVertexId, targetVertexId);
+            GraphEdge residualEdgeToRemove = endingNode.Neighbours.FindByName(targetVertexId, sourceVertexId);
             if (edgeToRemove == null)
             {
                 return false;
             }
 
             startingNode.Neighbours.Remove(edgeToRemove);
+            if (residualEdgeToRemove != null && residualEdgeToRemove.IsResidual)
+            {
+                endingNode.Neighbours.Remove(residualEdgeToRemove);
+            }
+
             this.edges--;
             return true;
         }
