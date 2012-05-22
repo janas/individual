@@ -121,7 +121,12 @@ namespace NetworkFlow.Provider.BLL
         {
             get
             {
-                return this.sink != null ? this.sink.VertexId : null;
+                if (this.sink != null)
+                {
+                    return this.sink.VertexId;
+                }
+
+                return null;
             }
 
             private set
@@ -130,6 +135,10 @@ namespace NetworkFlow.Provider.BLL
                 if (graphNode != null)
                 {
                     this.sink = graphNode;
+                }
+                else
+                {
+                    this.sink = null;
                 }
             }
         }
@@ -141,7 +150,12 @@ namespace NetworkFlow.Provider.BLL
         {
             get
             {
-                return this.source != null ? this.source.VertexId : null;
+                if (this.source != null)
+                {
+                    return this.source.VertexId;
+                }
+
+                return null;
             }
 
             private set
@@ -150,6 +164,10 @@ namespace NetworkFlow.Provider.BLL
                 if (graphNode != null)
                 {
                     this.source = graphNode;
+                }
+                else
+                {
+                    this.source = null;
                 }
             }
         }
@@ -349,6 +367,38 @@ namespace NetworkFlow.Provider.BLL
             }
 
             return this.maxFlow;
+        }
+
+        /// <summary>
+        /// Sets sink node to null.
+        /// </summary>
+        internal void EraseSinkNode()
+        {
+            foreach (GraphNode node in this.nodeSet)
+            {
+                if (node.NodeMode == 2)
+                {
+                    node.NodeMode = 0;
+                }
+            }
+
+            this.Sink = null;
+        }
+
+        /// <summary>
+        /// Sets source node to null.
+        /// </summary>
+        internal void EraseSourceNode()
+        {
+            foreach (GraphNode node in this.nodeSet)
+            {
+                if (node.NodeMode == 1)
+                {
+                    node.NodeMode = 0;
+                }
+            }
+
+            this.Source = null;
         }
 
         /// <summary>
