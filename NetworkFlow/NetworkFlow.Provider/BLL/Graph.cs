@@ -195,6 +195,11 @@ namespace NetworkFlow.Provider.BLL
                 return;
             }
 
+            if (from.VertexId.Equals(to.VertexId))
+            {
+                return;
+            }
+
             var edge = new GraphEdge
                 {
                     NodeFrom = @from, 
